@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Ice Swim Bet</title>
+<title>Lien en Thibo gaan ijsberen</title>
 
 <style>
 body {
@@ -40,7 +40,6 @@ h1 {
   margin:10px 0;
 }
 
-/* buttons */
 button {
   padding:6px 10px;
   margin:3px;
@@ -60,68 +59,85 @@ button:active {
   width:320px;
   height:220px;
   overflow:hidden;
+  background:linear-gradient(to top,#dff6ff,#f4fbff);
+  border-radius:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
+/* icy lake */
 .lake {
   position:absolute;
   bottom:0;
   width:100%;
-  height:100px;
-  background:linear-gradient(180deg,#5bbcff,#0077cc);
-  border-radius:50%;
+  height:120px;
+  background:linear-gradient(180deg,#bfe9ff,#7fd0ff,#4fb3ff);
+  border-top:2px solid rgba(255,255,255,0.7);
 }
 
-/* water movement */
-.lake::before {
+/* ice shimmer */
+.lake::after {
   content:"";
   position:absolute;
   width:200%;
   height:100%;
-  background:rgba(255,255,255,0.15);
-  animation:wave 5s linear infinite;
+  background:linear-gradient(
+    120deg,
+    rgba(255,255,255,0.1) 20%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0.1) 80%
+  );
+  animation:iceShine 6s linear infinite;
 }
 
-@keyframes wave {
+@keyframes iceShine {
   from { transform:translateX(-50%); }
   to { transform:translateX(0%); }
 }
 
-/* mountains */
-.mountain {
+/* cold mist */
+.scene::before {
+  content:"";
   position:absolute;
-  bottom:90px;
-  width:0;
-  height:0;
-  border-left:60px solid transparent;
-  border-right:60px solid transparent;
-  border-bottom:100px solid #7fbf7f;
+  top:20px;
+  width:100%;
+  height:60px;
+  background:radial-gradient(circle,rgba(255,255,255,0.6),transparent);
+  opacity:0.4;
 }
 
-.left { left:10px; }
-.right { right:10px; }
+/* lane divider */
+.scene::after {
+  content:"";
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:120px;
+  background:linear-gradient(
+    to right,
+    transparent 49%,
+    rgba(255,255,255,0.4) 50%,
+    transparent 51%
+  );
+  pointer-events:none;
+}
 
-/* ===== SWIMMER RIG ===== */
+/* ===== SWIMMERS ===== */
 .swimmer {
   position:absolute;
-  bottom:95px;
+  bottom:105px;
   width:90px;
   height:90px;
   transition:left 1s linear;
-
   animation: floatRig 2.8s ease-in-out infinite;
-  transform-origin:center;
 }
 
-/* floating body rig */
 @keyframes floatRig {
   0%   { transform: translateY(0px) rotate(-2deg); }
-  25%  { transform: translateY(-3px) rotate(1deg); }
   50%  { transform: translateY(-6px) rotate(2deg); }
-  75%  { transform: translateY(-3px) rotate(-1deg); }
   100% { transform: translateY(0px) rotate(-2deg); }
 }
 
-/* HEAD (your uploaded images) */
+/* heads */
 .head {
   position:absolute;
   top:0;
@@ -131,14 +147,6 @@ button:active {
   border-radius:50%;
   object-fit:cover;
   border:2px solid white;
-
-  animation: headTilt 2.8s ease-in-out infinite;
-}
-
-@keyframes headTilt {
-  0% { transform:rotate(-3deg); }
-  50% { transform:rotate(3deg); }
-  100% { transform:rotate(-3deg); }
 }
 
 /* body */
@@ -148,11 +156,14 @@ button:active {
   left:35px;
   width:10px;
   height:30px;
-  background:rgba(0,0,0,0.6);
   border-radius:5px;
 }
 
-/* arms (swimming stroke) */
+/* distinguish swimmers */
+#thiboSwimmer .body { background:#2c3e50; }
+#lienSwimmer .body { background:#6c5ce7; }
+
+/* arms */
 .arm {
   position:absolute;
   top:40px;
@@ -170,7 +181,7 @@ button:active {
   100% { transform:rotate(25deg); }
 }
 
-/* ripple effect */
+/* ripple */
 .ripple {
   position:absolute;
   bottom:-10px;
@@ -187,17 +198,14 @@ button:active {
   100% { transform:scale(2.5); opacity:0; }
 }
 
-/* 🥶 shake effect on penalty */
+/* shake effect */
 .shake {
   animation:shake 0.4s linear;
 }
 
 @keyframes shake {
   0% { transform:translateX(0); }
-  20% { transform:translateX(-4px); }
-  40% { transform:translateX(4px); }
-  60% { transform:translateX(-3px); }
-  80% { transform:translateX(3px); }
+  50% { transform:translateX(4px); }
   100% { transform:translateX(0); }
 }
 
@@ -223,8 +231,7 @@ button:active {
 
 <!-- Scene -->
 <div class="scene">
-  <div class="mountain left"></div>
-  <div class="mountain right"></div>
+
   <div class="lake"></div>
 
   <!-- Thibo -->
@@ -256,23 +263,20 @@ button:active {
 </div>
 
 <script>
-const STORAGE = "ice-swim-v4";
+const STORAGE = "ice-swim-v5";
 
 let thibo = 0;
 let lien = 0;
 
-/* format clock */
 function format(t){
   return String(Math.floor(t/60)).padStart(2,'0') + ":" +
          String(t%60).padStart(2,'0');
 }
 
-/* save */
 function save(){
   localStorage.setItem(STORAGE, JSON.stringify({thibo,lien}));
 }
 
-/* load */
 function load(){
   const data = JSON.parse(localStorage.getItem(STORAGE));
   if(data){
@@ -281,32 +285,35 @@ function load(){
   }
 }
 
-/* swimmers move across lake based on penalty time */
 function updatePositions(){
-  const max = 600; // full crossing
+  const max = 600;
 
   const tp = Math.min(thibo / max, 1);
   const lp = Math.min(lien / max, 1);
 
-  document.getElementById("thiboSwimmer").style.left = (20 + tp * 220) + "px";
-  document.getElementById("lienSwimmer").style.left = (20 + lp * 220) + "px";
+  const thiboBase = 10;
+  const lienBase  = 160;
+  const travel = 140;
+
+  document.getElementById("thiboSwimmer").style.left =
+    (thiboBase + tp * travel) + "px";
+
+  document.getElementById("lienSwimmer").style.left =
+    (lienBase + lp * travel) + "px";
 }
 
-/* render */
 function render(){
   document.getElementById("thiboTime").innerText = format(thibo);
   document.getElementById("lienTime").innerText = format(lien);
   updatePositions();
 }
 
-/* add time + shake */
 function addTime(person, sec){
   const el = document.getElementById(person + "Swimmer");
 
   if(person==="thibo") thibo += sec;
   else lien += sec;
 
-  /* shake animation */
   el.classList.remove("shake");
   void el.offsetWidth;
   el.classList.add("shake");
