@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Lien en Thibo gaan ijsberen</title>
+<title>Ice Swim Bet</title>
 
 <style>
 body {
@@ -17,200 +17,119 @@ body {
 }
 
 h1 {
-  font-weight:600;
   margin-bottom:20px;
 }
 
-.container {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+/* ===== LAYOUT ===== */
+.wrapper {
+  position:relative;
   width:100%;
-  max-width:850px;
-  gap:20px;
+  max-width:900px;
 }
 
+/* central image */
+.scene-img {
+  width:100%;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* player panels */
 .player {
-  flex:1;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:160px;
+  background:white;
+  padding:15px;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
   text-align:center;
+  transition:transform 0.2s;
+}
+
+/* left / right */
+.player.left { left:-180px; }
+.player.right { right:-180px; }
+
+.player h2 {
+  margin:5px 0;
 }
 
 .clock {
-  font-size:26px;
+  font-size:28px;
   margin:10px 0;
+  font-weight:600;
 }
 
+/* buttons */
 button {
   padding:6px 10px;
   margin:3px;
   border-radius:8px;
   border:1px solid #ccc;
-  background:white;
+  background:#f9f9f9;
   cursor:pointer;
 }
 
+button:hover {
+  background:#eef6ff;
+}
+
 button:active {
-  transform:scale(0.97);
+  transform:scale(0.96);
 }
 
-/* ===== SCENE ===== */
-.scene {
-  position:relative;
-  width:320px;
-  height:220px;
-  overflow:hidden;
-  background:linear-gradient(to top,#dff6ff,#f4fbff);
-  border-radius:20px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.1);
+/* ===== HIGHLIGHT EFFECT ===== */
+.player.highlight {
+  animation: highlightFlash 0.6s ease;
 }
 
-/* icy lake */
-.lake {
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:120px;
-  background:linear-gradient(180deg,#bfe9ff,#7fd0ff,#4fb3ff);
-  border-top:2px solid rgba(255,255,255,0.7);
+@keyframes highlightFlash {
+  0% {
+    transform: translateY(-50%) scale(1);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  }
+  30% {
+    transform: translateY(-50%) scale(1.08);
+    box-shadow:0 0 25px rgba(0,150,255,0.8);
+  }
+  60% {
+    transform: translateY(-50%) scale(0.98);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  }
 }
 
-/* ice shimmer */
-.lake::after {
-  content:"";
-  position:absolute;
-  width:200%;
-  height:100%;
-  background:linear-gradient(
-    120deg,
-    rgba(255,255,255,0.1) 20%,
-    rgba(255,255,255,0.4) 50%,
-    rgba(255,255,255,0.1) 80%
-  );
-  animation:iceShine 6s linear infinite;
-}
-
-@keyframes iceShine {
-  from { transform:translateX(-50%); }
-  to { transform:translateX(0%); }
-}
-
-/* cold mist */
-.scene::before {
-  content:"";
-  position:absolute;
-  top:20px;
-  width:100%;
-  height:60px;
-  background:radial-gradient(circle,rgba(255,255,255,0.6),transparent);
-  opacity:0.4;
-}
-
-/* lane divider */
-.scene::after {
-  content:"";
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:120px;
-  background:linear-gradient(
-    to right,
-    transparent 49%,
-    rgba(255,255,255,0.4) 50%,
-    transparent 51%
-  );
-  pointer-events:none;
-}
-
-/* ===== SWIMMERS ===== */
-.swimmer {
-  position:absolute;
-  bottom:105px;
-  width:90px;
-  height:90px;
-  transition:left 1s linear;
-  animation: floatRig 2.8s ease-in-out infinite;
-}
-
-@keyframes floatRig {
-  0%   { transform: translateY(0px) rotate(-2deg); }
-  50%  { transform: translateY(-6px) rotate(2deg); }
-  100% { transform: translateY(0px) rotate(-2deg); }
-}
-
-/* heads */
-.head {
-  position:absolute;
-  top:0;
-  left:25px;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid white;
-}
-
-/* body */
-.body {
-  position:absolute;
-  top:35px;
-  left:35px;
-  width:10px;
-  height:30px;
-  border-radius:5px;
-}
-
-/* distinguish swimmers */
-#thiboSwimmer .body { background:#2c3e50; }
-#lienSwimmer .body { background:#6c5ce7; }
-
-/* arms */
-.arm {
-  position:absolute;
-  top:40px;
-  left:20px;
-  width:50px;
-  height:4px;
-  background:rgba(0,0,0,0.7);
-  transform-origin:left;
-  animation:stroke 1.1s ease-in-out infinite;
-}
-
-@keyframes stroke {
-  0% { transform:rotate(25deg); }
-  50% { transform:rotate(-25deg); }
-  100% { transform:rotate(25deg); }
-}
-
-/* ripple */
-.ripple {
-  position:absolute;
-  bottom:-10px;
-  left:20px;
-  width:40px;
-  height:40px;
-  border:2px solid rgba(255,255,255,0.5);
-  border-radius:50%;
-  animation:ripple 2s infinite;
-}
-
-@keyframes ripple {
-  0% { transform:scale(0.5); opacity:0.6; }
-  100% { transform:scale(2.5); opacity:0; }
-}
-
-/* shake effect */
-.shake {
-  animation:shake 0.4s linear;
+/* shake */
+.player.shake {
+  animation: shake 0.4s;
 }
 
 @keyframes shake {
-  0% { transform:translateX(0); }
-  50% { transform:translateX(4px); }
-  100% { transform:translateX(0); }
+  0% { transform: translateY(-50%) translateX(0); }
+  25% { transform: translateY(-50%) translateX(-4px); }
+  50% { transform: translateY(-50%) translateX(4px); }
+  75% { transform: translateY(-50%) translateX(-3px); }
+  100% { transform: translateY(-50%) translateX(0); }
 }
 
-@media (max-width:850px){
-  .container { flex-direction:column; }
+/* mobile */
+@media (max-width:900px){
+  .player {
+    position:static;
+    transform:none;
+    margin:10px 0;
+    width:100%;
+  }
+
+  .wrapper {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
 }
 </style>
 </head>
@@ -219,51 +138,31 @@ button:active {
 
 <h1>Ice Swim Bet</h1>
 
-<div class="container">
+<div class="wrapper">
 
-<!-- Thibo -->
-<div class="player">
-  <h2>Thibo</h2>
-  <div class="clock" id="thiboTime">00:00</div>
-  <button onclick="addTime('thibo',20)">+20s</button>
-  <button onclick="addTime('thibo',60)">+60s</button>
-</div>
+  <!-- IMAGE -->
+  <img src="austria.png" class="scene-img"/>
 
-<!-- Scene -->
-<div class="scene">
-
-  <div class="lake"></div>
-
-  <!-- Thibo -->
-  <div class="swimmer" id="thiboSwimmer">
-    <img class="head" src="thibo.png"/>
-    <div class="body"></div>
-    <div class="arm"></div>
-    <div class="ripple"></div>
+  <!-- THIBO -->
+  <div class="player left" id="thiboCard">
+    <h2>Thibo</h2>
+    <div class="clock" id="thiboTime">00:00</div>
+    <button onclick="addTime('thibo',20)">+20s</button>
+    <button onclick="addTime('thibo',60)">+60s</button>
   </div>
 
-  <!-- Lien -->
-  <div class="swimmer" id="lienSwimmer">
-    <img class="head" src="lien.png"/>
-    <div class="body"></div>
-    <div class="arm"></div>
-    <div class="ripple"></div>
+  <!-- LIEN -->
+  <div class="player right" id="lienCard">
+    <h2>Lien</h2>
+    <div class="clock" id="lienTime">00:00</div>
+    <button onclick="addTime('lien',20)">+20s</button>
+    <button onclick="addTime('lien',60)">+60s</button>
   </div>
-
-</div>
-
-<!-- Lien -->
-<div class="player">
-  <h2>Lien</h2>
-  <div class="clock" id="lienTime">00:00</div>
-  <button onclick="addTime('lien',20)">+20s</button>
-  <button onclick="addTime('lien',60)">+60s</button>
-</div>
 
 </div>
 
 <script>
-const STORAGE = "ice-swim-v5";
+const STORAGE = "ice-swim-v7";
 
 let thibo = 0;
 let lien = 0;
@@ -285,38 +184,21 @@ function load(){
   }
 }
 
-function updatePositions(){
-  const max = 600;
-
-  const tp = Math.min(thibo / max, 1);
-  const lp = Math.min(lien / max, 1);
-
-  const thiboBase = 10;
-  const lienBase  = 160;
-  const travel = 140;
-
-  document.getElementById("thiboSwimmer").style.left =
-    (thiboBase + tp * travel) + "px";
-
-  document.getElementById("lienSwimmer").style.left =
-    (lienBase + lp * travel) + "px";
-}
-
 function render(){
   document.getElementById("thiboTime").innerText = format(thibo);
   document.getElementById("lienTime").innerText = format(lien);
-  updatePositions();
 }
 
 function addTime(person, sec){
-  const el = document.getElementById(person + "Swimmer");
+  const card = document.getElementById(person + "Card");
 
   if(person==="thibo") thibo += sec;
   else lien += sec;
 
-  el.classList.remove("shake");
-  void el.offsetWidth;
-  el.classList.add("shake");
+  // trigger animation
+  card.classList.remove("highlight","shake");
+  void card.offsetWidth;
+  card.classList.add("highlight","shake");
 
   save();
   render();
