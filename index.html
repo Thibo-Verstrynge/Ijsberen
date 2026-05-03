@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Een frisse duik in Oostenrijk</title>
+  <title>Een frisse duik in het jodelende Oostenrijk</title>
 
   <style>
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #e9f4ff;
-      color: #1a1a1a;
+      background: linear-gradient(to bottom, #e9f4ff, #cfe9ff);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -19,7 +18,7 @@
 
     h1 {
       font-weight: 600;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .container {
@@ -27,7 +26,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: 500px;
+      max-width: 750px;
       gap: 20px;
     }
 
@@ -38,8 +37,7 @@
 
     .clock {
       font-size: 28px;
-      font-weight: 500;
-      margin: 10px 0 15px;
+      margin: 10px 0;
     }
 
     .buttons {
@@ -61,61 +59,95 @@
       transform: scale(0.97);
     }
 
-    /* Scene */
+    /* SCENE */
     .scene {
       position: relative;
-      width: 140px;
-      height: 140px;
+      width: 260px;
+      height: 180px;
     }
 
     .lake {
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 45px;
-      background: #4da6ff;
+      height: 70px;
+      background: linear-gradient(180deg, #5bbcff, #0077cc);
       border-radius: 50%;
+      overflow: hidden;
     }
 
+    .water-wave {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      animation: waveMove 4s linear infinite;
+    }
+
+    @keyframes waveMove {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
+
+    /* RIPPLE EFFECT */
+    .ripple {
+      position: absolute;
+      bottom: 60px;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 50%;
+      animation: ripple 2s infinite;
+      opacity: 0;
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0.5); opacity: 0.6; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    .ripple.thibo { left: 60px; }
+    .ripple.lien { right: 60px; }
+
+    /* SVG swimmers */
     .swimmer {
       position: absolute;
-      bottom: 35px;
-      width: 20px;
-      height: 20px;
-      background: #333;
-      border-radius: 50%;
+      bottom: 65px;
+      width: 70px;
+      height: 70px;
     }
 
-    .swimmer.left {
-      left: 25px;
+    .thibo { left: 40px; animation: swim1 6s ease-in-out infinite; }
+    .lien { right: 40px; animation: swim2 7s ease-in-out infinite; }
+
+    @keyframes swim1 {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(30px); }
     }
 
-    .swimmer.right {
-      right: 25px;
+    @keyframes swim2 {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(-30px); }
     }
 
+    /* simple background mountains */
     .mountain {
       position: absolute;
-      bottom: 40px;
+      bottom: 70px;
       width: 0;
       height: 0;
-      border-left: 40px solid transparent;
-      border-right: 40px solid transparent;
-      border-bottom: 80px solid #7fbf7f;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 90px solid #7fbf7f;
+      opacity: 0.9;
     }
 
-    .mountain.left {
-      left: -10px;
-    }
+    .left { left: 10px; }
+    .right { right: 10px; }
 
-    .mountain.right {
-      right: -10px;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        flex-direction: column;
-      }
+    @media (max-width: 800px) {
+      .container { flex-direction: column; }
     }
   </style>
 </head>
@@ -130,7 +162,6 @@
   <div class="player">
     <h2>Thibo</h2>
     <div class="clock" id="thiboTime">00:00</div>
-
     <div class="buttons">
       <button onclick="addTime('thibo',20)">+20s</button>
       <button onclick="addTime('thibo',60)">+60s</button>
@@ -139,19 +170,55 @@
 
   <!-- Scene -->
   <div class="scene">
+
     <div class="mountain left"></div>
     <div class="mountain right"></div>
-    <div class="lake"></div>
 
-    <div class="swimmer left"></div>
-    <div class="swimmer right"></div>
+    <div class="lake">
+      <div class="water-wave"></div>
+    </div>
+
+    <!-- ripples -->
+    <div class="ripple thibo"></div>
+    <div class="ripple lien"></div>
+
+    <!-- SVG THIBO -->
+    <svg class="swimmer thibo" viewBox="0 0 100 100">
+      <!-- head -->
+      <circle cx="50" cy="25" r="10" fill="#1f3a5f"/>
+      <!-- body -->
+      <line x1="50" y1="35" x2="50" y2="65" stroke="#1f3a5f" stroke-width="4"/>
+      <!-- arms (animated) -->
+      <line x1="50" y1="45" x2="30" y2="35" stroke="#1f3a5f" stroke-width="3">
+        <animate attributeName="x2" values="30;70;30" dur="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="35;45;35" dur="1.2s" repeatCount="indefinite"/>
+      </line>
+      <line x1="50" y1="45" x2="70" y2="35" stroke="#1f3a5f" stroke-width="3">
+        <animate attributeName="x2" values="70;30;70" dur="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="35;45;35" dur="1.2s" repeatCount="indefinite"/>
+      </line>
+    </svg>
+
+    <!-- SVG LIEN -->
+    <svg class="swimmer lien" viewBox="0 0 100 100">
+      <circle cx="50" cy="25" r="10" fill="#8e2a2a"/>
+      <line x1="50" y1="35" x2="50" y2="65" stroke="#8e2a2a" stroke-width="4"/>
+      <line x1="50" y1="45" x2="30" y2="35" stroke="#8e2a2a" stroke-width="3">
+        <animate attributeName="x2" values="30;70;30" dur="1.4s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="35;45;35" dur="1.4s" repeatCount="indefinite"/>
+      </line>
+      <line x1="50" y1="45" x2="70" y2="35" stroke="#8e2a2a" stroke-width="3">
+        <animate attributeName="x2" values="70;30;70" dur="1.4s" repeatCount="indefinite"/>
+        <animate attributeName="y2" values="35;45;35" dur="1.4s" repeatCount="indefinite"/>
+      </line>
+    </svg>
+
   </div>
 
   <!-- Lien -->
   <div class="player">
     <h2>Lien</h2>
     <div class="clock" id="lienTime">00:00</div>
-
     <div class="buttons">
       <button onclick="addTime('lien',20)">+20s</button>
       <button onclick="addTime('lien',60)">+60s</button>
@@ -161,61 +228,44 @@
 </div>
 
 <script>
-const STORAGE_KEY = "ice-swim-bet-v1";
+const STORAGE_KEY = "ice-swim-bet-v2";
 
 let thibo = 0;
 let lien = 0;
 
-// Format time as MM:SS
-function formatTime(totalSeconds) {
-  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-  const seconds = String(totalSeconds % 60).padStart(2, '0');
-  return `${minutes}:${seconds}`;
+function format(t) {
+  return String(Math.floor(t/60)).padStart(2,'0') + ":" +
+         String(t%60).padStart(2,'0');
 }
 
-// Save to localStorage (single object = safer)
 function save() {
-  const data = {
-    thibo,
-    lien
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ thibo, lien }));
 }
 
-// Load from localStorage
 function load() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      thibo = data.thibo || 0;
-      lien = data.lien || 0;
-    } catch (e) {
-      console.error("Failed to load saved data");
-    }
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if (data) {
+    thibo = data.thibo || 0;
+    lien = data.lien || 0;
   }
 }
 
-// Update UI
-function updateDisplay() {
-  document.getElementById("thiboTime").innerText = formatTime(thibo);
-  document.getElementById("lienTime").innerText = formatTime(lien);
+function update() {
+  document.getElementById("thiboTime").innerText = format(thibo);
+  document.getElementById("lienTime").innerText = format(lien);
 }
 
-// Add time
-function addTime(player, seconds) {
-  if (player === "thibo") thibo += seconds;
-  else lien += seconds;
+function addTime(player, sec) {
+  if (player === "thibo") thibo += sec;
+  else lien += sec;
 
   save();
-  updateDisplay();
+  update();
 }
 
-// Initialize on page load
 window.onload = () => {
   load();
-  updateDisplay();
+  update();
 };
 </script>
 
