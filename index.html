@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Ice Swim Bet</title>
+<title>Lien en Thibo gaan ijsberen</title>
+<button onclick="resetTimes()" style="margin-bottom:15px;">
+  🔄 Reset
+</button>
 
 <style>
 body {
@@ -20,6 +23,13 @@ h1 {
   margin-bottom:20px;
 }
 
+function resetTimes(){
+  thibo = 0;
+  lien = 0;
+  localStorage.removeItem(STORAGE);
+  render();
+}
+  
 /* ===== LAYOUT ===== */
 .wrapper {
   position:relative;
