@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ice Swim Bet ❄️</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(to bottom, #bfe3ff, #6ec1ff);
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .player {
+      flex: 1;
+    }
+
+    .time {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      margin: 5px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .scene {
+      width: 140px;
+      height: 140px;
+      position: relative;
+    }
+
+    .lake {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      background: #0077cc;
+      border-radius: 50%;
+    }
+
+    .mountain {
+      position: absolute;
+      bottom: 30px;
+      width: 0;
+      height: 0;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-bottom: 80px solid green;
+    }
+
+    .left { left: 0; }
+    .right { right: 0; }
+
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>❄️ Ice Swim Bet ❄️</h1>
+
+<div class="container">
+  <div class="player">
+    <h2>Thibo 🧊</h2>
+    <div class="time" id="thiboTime">0m 0s</div>
+    <button onclick="addTime('thibo',20)">+20s 😬</button>
+    <button onclick="addTime('thibo',60)">+60s 😱</button>
+  </div>
+
+  <div class="scene">
+    <div class="lake"></div>
+    <div class="mountain left"></div>
+    <div class="mountain right"></div>
+  </div>
+
+  <div class="player">
+    <h2>Lien 🥶</h2>
+    <div class="time" id="lienTime">0m 0s</div>
+    <button onclick="addTime('lien',20)">+20s 😬</button>
+    <button onclick="addTime('lien',60)">+60s 😱</button>
+  </div>
+</div>
+
+<p>Every mistake = closer to freezing in Austria 🏔️❄️</p>
+
+<script>
+let thibo = 0;
+let lien = 0;
+
+function format(t) {
+  const m = Math.floor(t / 60);
+  const s = t % 60;
+  return m + "m " + s + "s";
+}
+
+function update() {
+  document.getElementById("thiboTime").innerText = format(thibo);
+  document.getElementById("lienTime").innerText = format(lien);
+
+  localStorage.setItem("thibo", thibo);
+  localStorage.setItem("lien", lien);
+}
+
+function addTime(player, amount) {
+  if (player === "thibo") thibo += amount;
+  else lien += amount;
+  update();
+}
+
+// Load saved values
+window.onload = () => {
+  thibo = Number(localStorage.getItem("thibo")) || 0;
+  lien = Number(localStorage.getItem("lien")) || 0;
+  update();
+};
+</script>
+
+</body>
+</html>
