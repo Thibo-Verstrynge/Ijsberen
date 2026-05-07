@@ -3,160 +3,261 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>Lien en Thibo gaan ijsberen</title>
-<button onclick="resetTimes()" style="margin-bottom:15px;">
-  🔄 Reset
-</button>
 
 <style>
-body {
+
+*{
+  box-sizing:border-box;
+}
+
+body{
   margin:0;
+  padding:20px;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+
   background:linear-gradient(to bottom,#e9f4ff,#cfe9ff);
+
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:20px;
 }
 
-h1 {
+h1{
+  margin-bottom:20px;
+  text-align:center;
+}
+
+/* ===== RESET BUTTON ===== */
+
+.top-controls{
   margin-bottom:20px;
 }
 
-function resetTimes(){
-  thibo = 0;
-  lien = 0;
-  localStorage.removeItem(STORAGE);
-  render();
+.reset-btn{
+  padding:10px 18px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:16px;
+
+  background:white;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+
+  transition:0.2s;
 }
-  
-/* ===== LAYOUT ===== */
-.wrapper {
+
+.reset-btn:hover{
+  transform:translateY(-2px);
+}
+
+/* ===== MAIN LAYOUT ===== */
+
+.wrapper{
   position:relative;
   width:100%;
   max-width:900px;
 }
 
 /* central image */
-.scene-img {
+
+.scene-img{
   width:100%;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  display:block;
+
+  border-radius:24px;
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.25);
 }
 
 /* ===== PLAYER CARDS ===== */
-.player {
+
+.player{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:170px;
-  padding:15px;
-  border-radius:18px;
+
+  width:180px;
+  padding:16px;
+
+  border-radius:22px;
+
   text-align:center;
 
-  backdrop-filter:blur(10px);
-  background:rgba(255,255,255,0.25);
-  border:1px solid rgba(255,255,255,0.4);
+  backdrop-filter:blur(12px);
 
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  background:rgba(255,255,255,0.28);
+
+  border:1px solid rgba(255,255,255,0.45);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.20);
+
+  transition:0.2s;
 }
 
-/* positions */
-.left { left:-190px; }
-.right { right:-190px; }
+.left{
+  left:-200px;
+}
 
-/* avatars */
-.avatar {
-  width:55px;
-  height:55px;
+.right{
+  right:-200px;
+}
+
+/* ===== AVATARS ===== */
+
+.avatar{
+  width:60px;
+  height:60px;
+
   border-radius:50%;
-  object-fit:contain;
-  border:2px solid white;
-  margin-bottom:5px;
+  object-fit:cover;
+
+  border:3px solid white;
+
+  margin-bottom:8px;
 }
 
-/* names */
-.player h2 {
-  margin:5px 0;
-  font-size:18px;
+/* ===== NAMES ===== */
+
+.player h2{
+  margin:4px 0;
+  font-size:20px;
 }
 
-/* CLOCK */
-.clock {
-  font-size:32px;
+/* ===== CLOCK ===== */
+
+.clock{
+  margin:14px 0;
+
+  font-size:34px;
   font-weight:700;
-  margin:10px 0;
   letter-spacing:1px;
 }
 
-/* color themes */
-.lien {
-  box-shadow:0 0 25px rgba(0,150,255,0.3);
+.lien{
+  box-shadow:
+    0 0 28px rgba(0,150,255,0.35);
 }
-.lien .clock {
+
+.lien .clock{
   color:#0077ff;
 }
 
-.thibo {
-  box-shadow:0 0 25px rgba(255,140,0,0.3);
+.thibo{
+  box-shadow:
+    0 0 28px rgba(255,140,0,0.35);
 }
-.thibo .clock {
+
+.thibo .clock{
   color:#ff7a00;
 }
 
-/* buttons */
-button {
-  padding:6px 10px;
-  margin:3px;
-  border-radius:8px;
+/* ===== BUTTONS ===== */
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+}
+
+.buttons button{
+  padding:8px 12px;
+
   border:none;
-  background:rgba(255,255,255,0.8);
+  border-radius:10px;
+
   cursor:pointer;
+
+  background:rgba(255,255,255,0.85);
+
+  font-size:14px;
+  font-weight:600;
+
+  transition:0.15s;
 }
 
-button:hover {
+.buttons button:hover{
   background:white;
+  transform:scale(1.05);
 }
 
-/* ===== HIGHLIGHT ===== */
-.player.highlight {
+/* ===== ANIMATIONS ===== */
+
+.player.highlight{
   animation:flash 0.6s ease;
 }
 
-@keyframes flash {
-  0% { transform:translateY(-50%) scale(1); }
-  30% { transform:translateY(-50%) scale(1.1); }
-  60% { transform:translateY(-50%) scale(0.95); }
-  100% { transform:translateY(-50%) scale(1); }
-}
-
-.player.shake {
+.player.shake{
   animation:shake 0.4s;
 }
 
-@keyframes shake {
-  0% { transform:translateY(-50%) translateX(0); }
-  25% { transform:translateY(-50%) translateX(-4px); }
-  50% { transform:translateY(-50%) translateX(4px); }
-  75% { transform:translateY(-50%) translateX(-3px); }
-  100% { transform:translateY(-50%) translateX(0); }
-}
-
-/* mobile */
-@media (max-width:900px){
-  .player {
-    position:static;
-    transform:none;
-    margin:10px 0;
-    width:100%;
+@keyframes flash{
+  0%{
+    transform:translateY(-50%) scale(1);
   }
 
-  .wrapper {
+  30%{
+    transform:translateY(-50%) scale(1.08);
+  }
+
+  60%{
+    transform:translateY(-50%) scale(0.96);
+  }
+
+  100%{
+    transform:translateY(-50%) scale(1);
+  }
+}
+
+@keyframes shake{
+  0%{
+    transform:translateY(-50%) translateX(0);
+  }
+
+  25%{
+    transform:translateY(-50%) translateX(-4px);
+  }
+
+  50%{
+    transform:translateY(-50%) translateX(4px);
+  }
+
+  75%{
+    transform:translateY(-50%) translateX(-3px);
+  }
+
+  100%{
+    transform:translateY(-50%) translateX(0);
+  }
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width:900px){
+
+  .wrapper{
     display:flex;
     flex-direction:column;
     align-items:center;
+    gap:15px;
+  }
+
+  .player{
+    position:static;
+    transform:none;
+    width:100%;
+    max-width:420px;
+  }
+
+  .player.highlight,
+  .player.shake{
+    animation:none;
   }
 }
+
 </style>
 </head>
 
@@ -164,77 +265,225 @@ button:hover {
 
 <h1>Lien en Thibo gaan ijsberen</h1>
 
+<div class="top-controls">
+  <button class="reset-btn" onclick="resetTimes()">
+    🔄 Reset
+  </button>
+</div>
+
 <div class="wrapper">
 
   <!-- IMAGE -->
-  <img src="austria.png" class="scene-img"/>
 
-  <!-- LIEN (LEFT) -->
+  <img src="austria.png" class="scene-img" alt="Austria"/>
+
+  <!-- LIEN -->
+
   <div class="player left lien" id="lienCard">
-    <img src="lien.png" class="avatar"/>
+
+    <img src="lien.png" class="avatar" alt="Lien"/>
+
     <h2>Lien</h2>
-    <div class="clock" id="lienTime">00:00</div>
-    <button onclick="addTime('lien',20)">+20s</button>
-    <button onclick="addTime('lien',60)">+60s</button>
+
+    <div class="clock" id="lienTime">
+      00:00
+    </div>
+
+    <div class="buttons">
+      <button onclick="addTime('lien',20)">
+        +20s
+      </button>
+
+      <button onclick="addTime('lien',60)">
+        +60s
+      </button>
+    </div>
+
   </div>
 
-  <!-- THIBO (RIGHT) -->
+  <!-- THIBO -->
+
   <div class="player right thibo" id="thiboCard">
-    <img src="thibo.png" class="avatar"/>
+
+    <img src="thibo.png" class="avatar" alt="Thibo"/>
+
     <h2>Thibo</h2>
-    <div class="clock" id="thiboTime">00:00</div>
-    <button onclick="addTime('thibo',20)">+20s</button>
-    <button onclick="addTime('thibo',60)">+60s</button>
+
+    <div class="clock" id="thiboTime">
+      00:00
+    </div>
+
+    <div class="buttons">
+      <button onclick="addTime('thibo',20)">
+        +20s
+      </button>
+
+      <button onclick="addTime('thibo',60)">
+        +60s
+      </button>
+    </div>
+
   </div>
 
 </div>
 
-<script>
-const STORAGE = "ice-swim-v8";
+<!-- FIREBASE -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  set,
+  onValue
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+import { getAnalytics }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+
+
+/* ===== FIREBASE CONFIG ===== */
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyA6XTt_WNpnqD3E0uaXxt86ohyOHCZtuwI",
+
+  authDomain: "ijsberen-245fb.firebaseapp.com",
+
+  databaseURL:
+    "https://ijsberen-245fb-default-rtdb.europe-west1.firebasedatabase.app",
+
+  projectId: "ijsberen-245fb",
+
+  storageBucket: "ijsberen-245fb.firebasestorage.app",
+
+  messagingSenderId: "796524311216",
+
+  appId:
+    "1:796524311216:web:98ac5b6fb09f4765044175",
+
+  measurementId: "G-28ZGT01NL3"
+};
+
+
+/* ===== INIT ===== */
+
+const app = initializeApp(firebaseConfig);
+
+getAnalytics(app);
+
+const db = getDatabase(app);
+
+const scoreRef = ref(db, "ice-swim");
+
+
+/* ===== STATE ===== */
 
 let thibo = 0;
 let lien = 0;
 
-function format(t){
-  return String(Math.floor(t/60)).padStart(2,'0') + ":" +
-         String(t%60).padStart(2,'0');
+
+/* ===== HELPERS ===== */
+
+function format(seconds){
+
+  const mins =
+    Math.floor(seconds / 60);
+
+  const secs =
+    seconds % 60;
+
+  return (
+    String(mins).padStart(2,'0')
+    + ":"
+    + String(secs).padStart(2,'0')
+  );
 }
 
-function save(){
-  localStorage.setItem(STORAGE, JSON.stringify({thibo,lien}));
-}
-
-function load(){
-  const data = JSON.parse(localStorage.getItem(STORAGE));
-  if(data){
-    thibo = data.thibo || 0;
-    lien = data.lien || 0;
-  }
-}
 
 function render(){
-  document.getElementById("thiboTime").innerText = format(thibo);
-  document.getElementById("lienTime").innerText = format(lien);
+
+  document.getElementById("thiboTime")
+    .innerText = format(thibo);
+
+  document.getElementById("lienTime")
+    .innerText = format(lien);
 }
 
-function addTime(person, sec){
-  const card = document.getElementById(person + "Card");
 
-  if(person==="thibo") thibo += sec;
-  else lien += sec;
+function animateCard(person){
 
-  card.classList.remove("highlight","shake");
+  const card =
+    document.getElementById(person + "Card");
+
+  card.classList.remove(
+    "highlight",
+    "shake"
+  );
+
   void card.offsetWidth;
-  card.classList.add("highlight","shake");
+
+  card.classList.add(
+    "highlight",
+    "shake"
+  );
+}
+
+
+function save(){
+
+  set(scoreRef,{
+    thibo,
+    lien
+  });
+}
+
+
+/* ===== BUTTON ACTIONS ===== */
+
+window.addTime = function(person,seconds){
+
+  if(person === "thibo"){
+    thibo += seconds;
+  } else {
+    lien += seconds;
+  }
+
+  animateCard(person);
 
   save();
-  render();
-}
-
-window.onload = () => {
-  load();
-  render();
 };
+
+
+window.resetTimes = function(){
+
+  thibo = 0;
+  lien = 0;
+
+  save();
+};
+
+
+/* ===== REALTIME LISTENER ===== */
+
+onValue(scoreRef,(snapshot)=>{
+
+  const data = snapshot.val();
+
+  if(data){
+
+    thibo = data.thibo || 0;
+
+    lien = data.lien || 0;
+  }
+
+  render();
+});
+
 </script>
 
 </body>
