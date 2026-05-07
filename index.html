@@ -43,7 +43,9 @@ h1{
   font-size:16px;
 
   background:white;
-  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.15);
 
   transition:0.2s;
 }
@@ -76,10 +78,12 @@ h1{
 
 .player{
   position:absolute;
+
   top:50%;
   transform:translateY(-50%);
 
   width:180px;
+
   padding:16px;
 
   border-radius:22px;
@@ -113,6 +117,7 @@ h1{
   height:60px;
 
   border-radius:50%;
+
   object-fit:cover;
 
   border:3px solid white;
@@ -134,6 +139,7 @@ h1{
 
   font-size:34px;
   font-weight:700;
+
   letter-spacing:1px;
 }
 
@@ -195,6 +201,7 @@ h1{
 }
 
 @keyframes flash{
+
   0%{
     transform:translateY(-50%) scale(1);
   }
@@ -213,6 +220,7 @@ h1{
 }
 
 @keyframes shake{
+
   0%{
     transform:translateY(-50%) translateX(0);
   }
@@ -266,30 +274,47 @@ h1{
 <h1>Lien en Thibo gaan ijsberen</h1>
 
 <div class="top-controls">
+
   <button class="reset-btn" onclick="resetTimes()">
     🔄 Reset
   </button>
+
 </div>
 
 <div class="wrapper">
 
-  <!-- IMAGE -->
+  <!-- MAIN IMAGE -->
 
-  <img src="austria.png" class="scene-img" alt="Austria"/>
+  <img
+    src="austria.png"
+    class="scene-img"
+    alt="Austria"
+  />
 
   <!-- LIEN -->
 
-  <div class="player left lien" id="lienCard">
+  <div
+    class="player left lien"
+    id="lienCard"
+  >
 
-    <img src="lien.png" class="avatar" alt="Lien"/>
+    <img
+      src="lien.png"
+      class="avatar"
+      alt="Lien"
+    />
 
     <h2>Lien</h2>
 
-    <div class="clock" id="lienTime">
+    <div
+      class="clock"
+      id="lienTime"
+    >
       00:00
     </div>
 
     <div class="buttons">
+
       <button onclick="addTime('lien',20)">
         +20s
       </button>
@@ -297,23 +322,35 @@ h1{
       <button onclick="addTime('lien',60)">
         +60s
       </button>
+
     </div>
 
   </div>
 
   <!-- THIBO -->
 
-  <div class="player right thibo" id="thiboCard">
+  <div
+    class="player right thibo"
+    id="thiboCard"
+  >
 
-    <img src="thibo.png" class="avatar" alt="Thibo"/>
+    <img
+      src="thibo.png"
+      class="avatar"
+      alt="Thibo"
+    />
 
     <h2>Thibo</h2>
 
-    <div class="clock" id="thiboTime">
+    <div
+      class="clock"
+      id="thiboTime"
+    >
       00:00
     </div>
 
     <div class="buttons">
+
       <button onclick="addTime('thibo',20)">
         +20s
       </button>
@@ -321,13 +358,16 @@ h1{
       <button onclick="addTime('thibo',60)">
         +60s
       </button>
+
     </div>
 
   </div>
 
 </div>
 
-<!-- FIREBASE -->
+<!-- =========================
+     FIREBASE SCRIPT
+========================= -->
 
 <script type="module">
 
@@ -346,7 +386,9 @@ import { getAnalytics }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
 
-/* ===== FIREBASE CONFIG ===== */
+/* =========================
+   FIREBASE CONFIG
+========================= */
 
 const firebaseConfig = {
 
@@ -359,35 +401,50 @@ const firebaseConfig = {
 
   projectId: "ijsberen-245fb",
 
-  storageBucket: "ijsberen-245fb.firebasestorage.app",
+  storageBucket:
+    "ijsberen-245fb.firebasestorage.app",
 
-  messagingSenderId: "796524311216",
+  messagingSenderId:
+    "796524311216",
 
   appId:
     "1:796524311216:web:98ac5b6fb09f4765044175",
 
-  measurementId: "G-28ZGT01NL3"
+  measurementId:
+    "G-28ZGT01NL3"
 };
 
 
-/* ===== INIT ===== */
+/* =========================
+   INITIALIZE FIREBASE
+========================= */
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
 getAnalytics(app);
 
-const db = getDatabase(app);
+const db =
+  getDatabase(app);
 
-const scoreRef = ref(db, "ice-swim");
+const scoreRef =
+  ref(db, "ice-swim");
 
 
-/* ===== STATE ===== */
+/* =========================
+   STATE
+========================= */
 
 let thibo = 0;
 let lien = 0;
 
+/* prevent accidental reset */
+let loaded = false;
 
-/* ===== HELPERS ===== */
+
+/* =========================
+   HELPERS
+========================= */
 
 function format(seconds){
 
@@ -436,6 +493,9 @@ function animateCard(person){
 
 function save(){
 
+  /* do not overwrite before loading */
+  if(!loaded) return;
+
   set(scoreRef,{
     thibo,
     lien
@@ -443,17 +503,22 @@ function save(){
 }
 
 
-/* ===== BUTTON ACTIONS ===== */
+/* =========================
+   BUTTON ACTIONS
+========================= */
 
 window.addTime = function(person,seconds){
 
   if(person === "thibo"){
     thibo += seconds;
-  } else {
+  }
+  else{
     lien += seconds;
   }
 
   animateCard(person);
+
+  render();
 
   save();
 };
@@ -464,16 +529,21 @@ window.resetTimes = function(){
   thibo = 0;
   lien = 0;
 
+  render();
+
   save();
 };
 
 
-/* ===== REALTIME LISTENER ===== */
+/* =========================
+   REALTIME DATABASE LISTENER
+========================= */
 
 onValue(scoreRef,(snapshot)=>{
 
   const data = snapshot.val();
 
+  /* only overwrite if data exists */
   if(data){
 
     thibo = data.thibo || 0;
@@ -482,6 +552,9 @@ onValue(scoreRef,(snapshot)=>{
   }
 
   render();
+
+  /* database finished loading */
+  loaded = true;
 });
 
 </script>
